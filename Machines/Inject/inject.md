@@ -153,7 +153,7 @@ switch to Phil user using the password we found earlier.
 ![user_1](https://github.com/Lynk4/HTB-Writeups/assets/44930131/72c0f642-15a3-40b7-9419-c840ed3913aa)
 
 
-#### Now it's time for privilege escalation......
+### Now it's time for privilege escalation......
 
 
 In order to access root we need to see /opt directory.
